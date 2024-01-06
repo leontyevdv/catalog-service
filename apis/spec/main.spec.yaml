@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Book Catalog API
+  description: A sample API to illustrate OpenAPI concepts
+paths:
+  /books:
+    get:
+      description: Returns a list of stuff
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    post:
+      description: Creates a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        422:
+          description: A book with the same ISBN already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /books/{isbn}:
+    get:
+      description: Returns a single book
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        404:
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      description: Updates a book
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    delete:
+      description: Deletes a book
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        isbn:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        price:
+          type: number
+          format: double
+      required:
+        - isbn
+        - title
+        - author
+        - price
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+      required:
+        - code
+        - message
