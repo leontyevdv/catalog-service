@@ -44,12 +44,6 @@ repositories {
 
 dependencyManagement {
     imports {
-
-    }
-}
-
-dependencyManagement {
-    imports {
         mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
     }
 }
