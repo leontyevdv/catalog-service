@@ -17,7 +17,7 @@ public class BookController implements BooksApi {
   }
 
   @Override
-  public ResponseEntity<List<BookDTO>> booksGet() {
+  public ResponseEntity<List<BookDTO>> getBooks() {
     return ResponseEntity.ok(
         bookService.viewBookList().stream()
             .map(it -> new BookDTO(it.isbn(), it.title(), it.author(), it.price()))
@@ -25,19 +25,19 @@ public class BookController implements BooksApi {
   }
 
   @Override
-  public ResponseEntity<Void> booksIsbnDelete(String isbn) {
+  public ResponseEntity<Void> deleteBook(String isbn) {
     bookService.removeBookFromCatalog(isbn);
     return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<BookDTO> booksIsbnGet(String isbn) {
+  public ResponseEntity<BookDTO> getBook(String isbn) {
     Book book = bookService.viewBookDetails(isbn);
     return ResponseEntity.ok(new BookDTO(book.isbn(), book.title(), book.author(), book.price()));
   }
 
   @Override
-  public ResponseEntity<BookDTO> booksIsbnPut(String isbn, BookDTO bookDTO) {
+  public ResponseEntity<BookDTO> updateBook(String isbn, BookDTO bookDTO) {
     Book book =
         new Book(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPrice());
 
@@ -53,7 +53,7 @@ public class BookController implements BooksApi {
   }
 
   @Override
-  public ResponseEntity<BookDTO> booksPost(BookDTO bookDTO) {
+  public ResponseEntity<BookDTO> createBook(BookDTO bookDTO) {
     Book book =
         new Book(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPrice());
 
