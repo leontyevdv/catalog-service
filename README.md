@@ -6,7 +6,9 @@ A sandbox for playing with different microservices concepts.
 - Java 21
 - Gatling simulations and load tests. See the [simulations](simulations) directory. Currenctly runs against the gatling test environment.
 - Spec-first approach with the OpenAPI specification. See the [apis/spec](apis/spec) directory.
-- Spec-first server with OpenAPI Generator. See the [apis/server](apis/server) directory. 
+- Spec-first server with OpenAPI Generator. See the [apis/server](apis/server) directory.
+- External configuration with Spring Cloud Config Server. See the [config-repo](https://github.com/leontyevdv/book-service-config).
+- ADR (Architecture Decision Records). See the [doc/architecture/decisions](doc/architecture/decisions) directory and  [the ADR Tools' repo](https://github.com/npryce/adr-tools)
 
 ## TODO
 - Modify Gatling simulations to simulate load for this service.
@@ -38,6 +40,26 @@ Prerequisites:
 
 ```bash
 grype .
+```
+
+### Add new ADR
+
+Prerequisites:
+- Install adr-tools. See [Installation documentation](https://github.com/npryce/adr-tools/blob/master/INSTALL.md)
+
+Create Architecture Decision Records:
+```bash
+adr new Implement as Unix shell scripts
+```
+
+Create a new ADR that supercedes a previous one:
+```bash
+adr new -s 9 Use Rust for performance-critical functionality
+```
+
+Help
+```bash
+adr help
 ```
 
 ## Container tasks
