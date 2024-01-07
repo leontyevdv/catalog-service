@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import java.util.Collection;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +12,6 @@ public class BookService {
   private final BookRepository bookRepository;
   private final Validator validator;
 
-  @Autowired
   public BookService(BookRepository bookRepository, Validator validator) {
     this.bookRepository = bookRepository;
     this.validator = validator;

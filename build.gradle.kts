@@ -1,4 +1,5 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
     java
@@ -27,6 +28,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -37,6 +40,14 @@ tasks.withType<Test> {
 
 tasks.withType<BootBuildImage> {
     builder = "paketobuildpacks/builder:tiny"
+}
+
+tasks.withType<JavaCompile> {
+    inputs.files(tasks.named("processResources"))
+}
+
+tasks.withType<BootRun> {
+    systemProperty("spring.profiles.active", "local")
 }
 
 task("printSourceSetInformation") {

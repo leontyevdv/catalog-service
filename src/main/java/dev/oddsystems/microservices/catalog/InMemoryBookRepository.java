@@ -11,23 +11,6 @@ public class InMemoryBookRepository implements BookRepository {
 
   private final Map<String, Book> books = new ConcurrentHashMap<>();
 
-  public InMemoryBookRepository() {
-    books.put(
-        "978-1-56619-909-4",
-        new Book(
-            "978-1-56619-909-4",
-            "The C Programming Language",
-            "Brian W. Kernighan, Dennis M. Ritchie",
-            22.99));
-    books.put(
-        "978-0-13-235088-4",
-        new Book(
-            "978-0-13-235088-4",
-            "Clean Code: A Handbook of Agile Software Craftsmanship",
-            "Robert C. Martin",
-            37.99));
-  }
-
   @Override
   public Collection<Book> findAll() {
     return books.values();
