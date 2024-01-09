@@ -4,6 +4,7 @@ A sandbox for playing with different microservices concepts.
 
 ## What's interesting in this project
 - Java 21
+- Gradle multi-module project (umbrella)
 - Gatling simulations and load tests. See the [simulations](simulations) directory. Currenctly runs against the gatling test environment.
 - Spec-first approach with the OpenAPI specification. See the [apis/spec](apis/spec) directory.
 - Spec-first server with OpenAPI Generator. See the [apis/server](apis/server) directory.
