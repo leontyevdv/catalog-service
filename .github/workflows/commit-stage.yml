@@ -28,7 +28,7 @@ jobs:
       - name: "[book-catalog-service] Build, unit tests and integration tests"
         run: |
           chmod +x gradlew
-          ./gradlew build
+          ./gradlew checkFeatures
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
