@@ -1,4 +1,4 @@
 rootProject.name = "catalog-service"
 
-include(":apis:server")
-include(":simulations")
+includeBuild("book-catalog-service")
+includeBuild("book-catalog-config-service")
