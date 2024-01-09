@@ -1,5 +1,13 @@
 name: Commit Stage
-on: push
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'HELP.md'
+      - '.adr-dir'
+      - '.gitignore'
+      - 'doc/**'
+      - '**/*.md'
 
 jobs:
   build:
