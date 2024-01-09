@@ -25,10 +25,10 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - name: [book-catalog-service] Build, unit tests and integration tests
+      - name: "[book-catalog-service] Build, unit tests and integration tests"
         run: |
           chmod +x gradlew
-          ./gradlew checkFeatures
+          ./gradlew build
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
