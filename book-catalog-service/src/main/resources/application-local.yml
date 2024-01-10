@@ -1,2 +1,4 @@
 oddbooks:
   testdata.enabled: true
+  greeting: "[local profile] Hello World!"
+

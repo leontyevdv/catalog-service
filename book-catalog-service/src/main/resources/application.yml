@@ -1,6 +1,25 @@
 spring:
   application:
-    name: "catalog-service"
+    name: catalog-service
+  config:
+    import: "optional:configserver:" # remove optional in production
+  cloud:
+    config:
+      uri: http://localhost:8888
+      request-connect-timeout: 5000
+      request-read-timeout: 5000
+      fail-fast: false # set true in production
+      retry:
+        max-attempts: 6
+        initial-interval: 1000
+        max-interval: 2000
+        multiplier: 1.1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh # Exposes the POST /actuator/refresh endpoint through HTTP
 
 server:
   port: 9001
@@ -12,4 +31,4 @@ server:
       min-spare: 5
 
 oddbooks:
-  greeting: "Hello World!"
+  greeting: "[default profile] Hello World!"

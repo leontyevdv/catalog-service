@@ -20,9 +20,20 @@ repositories {
     mavenCentral()
 }
 
+extra["springCloudVersion"] = "2023.0.0"
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+}
+
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
+    implementation("org.springframework.retry:spring-retry")
     implementation(project(":apis:server"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -47,7 +58,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.withType<BootRun> {
-    systemProperty("spring.profiles.active", "local")
+    systemProperty("spring.profiles.active", "prod")
 }
 
 task("printSourceSetInformation") {

@@ -28,10 +28,16 @@ A sandbox for playing with different microservices concepts.
 | `./gradlew bootJar`        | Package the application as a JAR.             |
 | `./gradlew bootBuildImage` | Package the application as a container image. |
 
+### Run the application from terminal
 After building the application, you can also run it from the Java CLI:
-
 ```bash
 java -jar build/libs/catalog-service-0.0.1-SNAPSHOT.jar
+```
+
+### Spring Cloud
+Refresh Spring Cloud Config properties:
+```bash
+curl -X POST http://localhost:8080/actuator/refresh
 ```
 
 ### Run vulnerability checks
