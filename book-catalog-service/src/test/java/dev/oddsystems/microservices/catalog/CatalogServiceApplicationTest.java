@@ -2,11 +2,14 @@ package dev.oddsystems.microservices.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.oddsystems.microservices.books.server.model.BookDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+@ActiveProfiles("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CatalogServiceApplicationTest {
 
@@ -15,8 +18,8 @@ class CatalogServiceApplicationTest {
   @Test
   void whenGetRequestWithIdThenBookReturned() {
     var bookIsbn = "1231231230";
-    var bookToCreate = new Book(bookIsbn, "Title", "Author", 9.90);
-    Book expectedBook =
+    var bookToCreate = new BookDTO(bookIsbn, "Title", "Author", 9.90, 0);
+    BookDTO expectedBook =
         webTestClient
             .post()
             .uri("/books")
@@ -24,7 +27,7 @@ class CatalogServiceApplicationTest {
             .exchange()
             .expectStatus()
             .isCreated()
-            .expectBody(Book.class)
+            .expectBody(BookDTO.class)
             .value(book -> assertThat(book).isNotNull())
             .returnResult()
             .getResponseBody();
@@ -35,17 +38,17 @@ class CatalogServiceApplicationTest {
         .exchange()
         .expectStatus()
         .is2xxSuccessful()
-        .expectBody(Book.class)
+        .expectBody(BookDTO.class)
         .value(
             actualBook -> {
               assertThat(actualBook).isNotNull();
-              assertThat(actualBook.isbn()).isEqualTo(expectedBook.isbn());
+              assertThat(actualBook.getIsbn()).isEqualTo(expectedBook.getIsbn());
             });
   }
 
   @Test
   void whenPostRequestThenBookCreated() {
-    var expectedBook = new Book("1231231231", "Title", "Author", 9.90);
+    var expectedBook = new BookDTO("1231231231", "Title", "Author", 9.90, 0);
 
     webTestClient
         .post()
@@ -54,19 +57,19 @@ class CatalogServiceApplicationTest {
         .exchange()
         .expectStatus()
         .isCreated()
-        .expectBody(Book.class)
+        .expectBody(BookDTO.class)
         .value(
             actualBook -> {
               assertThat(actualBook).isNotNull();
-              assertThat(actualBook.isbn()).isEqualTo(expectedBook.isbn());
+              assertThat(actualBook.getIsbn()).isEqualTo(expectedBook.getIsbn());
             });
   }
 
   @Test
   void whenPutRequestThenBookUpdated() {
     var bookIsbn = "1231231232";
-    var bookToCreate = new Book(bookIsbn, "Title", "Author", 9.90);
-    Book createdBook =
+    var bookToCreate = new BookDTO(bookIsbn, "Title", "Author", 9.90, 0);
+    BookDTO createdBook =
         webTestClient
             .post()
             .uri("/books")
@@ -74,13 +77,14 @@ class CatalogServiceApplicationTest {
             .exchange()
             .expectStatus()
             .isCreated()
-            .expectBody(Book.class)
+            .expectBody(BookDTO.class)
             .value(book -> assertThat(book).isNotNull())
             .returnResult()
             .getResponseBody();
 
     var bookToUpdate =
-        new Book(createdBook.isbn(), createdBook.title(), createdBook.author(), 7.95);
+        new BookDTO(
+            createdBook.getIsbn(), createdBook.getTitle(), createdBook.getAuthor(), 7.95, 0);
 
     webTestClient
         .put()
@@ -89,18 +93,18 @@ class CatalogServiceApplicationTest {
         .exchange()
         .expectStatus()
         .isOk()
-        .expectBody(Book.class)
+        .expectBody(BookDTO.class)
         .value(
             actualBook -> {
               assertThat(actualBook).isNotNull();
-              assertThat(actualBook.price()).isEqualTo(bookToUpdate.price());
+              assertThat(actualBook.getPrice()).isEqualTo(bookToUpdate.getPrice());
             });
   }
 
   @Test
   void whenDeleteRequestThenBookDeleted() {
     var bookIsbn = "1231231233";
-    var bookToCreate = new Book(bookIsbn, "Title", "Author", 9.90);
+    var bookToCreate = new BookDTO(bookIsbn, "Title", "Author", 9.90, 0);
     webTestClient
         .post()
         .uri("/books")

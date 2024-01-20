@@ -133,7 +133,52 @@ kubectl delete service catalog-service
 |                 |          |            | 200    | Book           | Create a book with the given ISBN. |
 | `/books/{isbn}` | `DELETE` |            | 204    |                | Delete the book with the given ISBN. |
 
+## Running a PostgreSQL Database
+
+Run PostgreSQL as a Docker container
+
+```bash
+docker run -d \
+	--name book-catalog-postgres \
+	-e POSTGRES_USER=user \
+	-e POSTGRES_PASSWORD=password \
+	-e POSTGRES_DB=book_catalog \
+	-p 5432:5432 \
+	postgres:14.4
+```
+
+### Container Commands
+
+| Docker Command	                     | Description       |
+|:------------------------------------|:-----------------:|
+| `docker stop book-catalog-postgres`        | Stop container.   |
+| `docker start book-catalog-postgres`       | Start container.  |
+| `docker remove book-catalog-postgres`      | Remove container. |
+
+### Database Commands
+
+Start an interactive PSQL console:
+
+```bash
+docker exec -it book-catalog-postgres psql -U user -d book_catalog
+```
+
+| PSQL Command	             | Description                                    |
+|:--------------------------|:-----------------------------------------------|
+| `\list`                   | List all databases.                            |
+| `\connect book_catalog`   | Connect to specific database.                  |
+| `\dt`                     | List all tables.                               |
+| `\d book`                 | Show the `book` table schema.                  |
+| `\quit`                   | Quit interactive psql console.                 |
+
+From within the PSQL console, you can also fetch all the data stored in the `book` table.
+
+```bash
+select * from book;
+```
+
 ## Resources
 
 - [Cloud Native Spring in Action](https://www.manning.com/books/cloud-native-spring-in-action) book
   by [Thomas Vitale](https://www.thomasvitale.com).
+- [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)

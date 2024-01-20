@@ -3,7 +3,6 @@ package dev.oddsystems.microservices.catalog;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import java.util.Collection;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class BookService {
     this.validator = validator;
   }
 
-  public Collection<Book> viewBookList() {
+  public Iterable<Book> viewBookList() {
     return bookRepository.findAll();
   }
 
@@ -44,7 +43,15 @@ public class BookService {
         .map(
             existingBook -> {
               var bookToUpdate =
-                  new Book(existingBook.isbn(), book.title(), book.author(), book.price());
+                  new Book(
+                      existingBook.id(),
+                      existingBook.isbn(),
+                      book.title(),
+                      book.author(),
+                      book.price(),
+                      existingBook.createdDate(),
+                      existingBook.lastModifiedDate(),
+                      existingBook.version());
               return bookRepository.save(bookToUpdate);
             })
         .orElseGet(() -> addBookToCatalog(book));

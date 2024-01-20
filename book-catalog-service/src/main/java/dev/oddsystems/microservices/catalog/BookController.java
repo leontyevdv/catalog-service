@@ -4,6 +4,7 @@ import dev.oddsystems.microservices.books.server.api.BooksApi;
 import dev.oddsystems.microservices.books.server.model.BookDTO;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.StreamSupport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -18,9 +19,10 @@ public class BookController implements BooksApi {
 
   @Override
   public ResponseEntity<List<BookDTO>> getBooks() {
+    Iterable<Book> books = bookService.viewBookList();
     return ResponseEntity.ok(
-        bookService.viewBookList().stream()
-            .map(it -> new BookDTO(it.isbn(), it.title(), it.author(), it.price()))
+        StreamSupport.stream(books.spliterator(), false)
+            .map(it -> new BookDTO(it.isbn(), it.title(), it.author(), it.price(), it.version()))
             .toList());
   }
 
@@ -33,13 +35,14 @@ public class BookController implements BooksApi {
   @Override
   public ResponseEntity<BookDTO> getBook(String isbn) {
     Book book = bookService.viewBookDetails(isbn);
-    return ResponseEntity.ok(new BookDTO(book.isbn(), book.title(), book.author(), book.price()));
+    return ResponseEntity.ok(
+        new BookDTO(book.isbn(), book.title(), book.author(), book.price(), book.version()));
   }
 
   @Override
   public ResponseEntity<BookDTO> updateBook(String isbn, BookDTO bookDTO) {
     Book book =
-        new Book(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPrice());
+        Book.of(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPrice());
 
     Book bookInCatalog = bookService.editBookDetails(isbn, book);
 
@@ -49,13 +52,14 @@ public class BookController implements BooksApi {
                 bookInCatalog.isbn(),
                 bookInCatalog.title(),
                 bookInCatalog.author(),
-                bookInCatalog.price()));
+                bookInCatalog.price(),
+                bookInCatalog.version()));
   }
 
   @Override
   public ResponseEntity<BookDTO> createBook(BookDTO bookDTO) {
     Book book =
-        new Book(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPrice());
+        Book.of(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getPrice());
 
     Book bookInCatalog = bookService.addBookToCatalog(book);
 
@@ -65,6 +69,7 @@ public class BookController implements BooksApi {
                 bookInCatalog.isbn(),
                 bookInCatalog.title(),
                 bookInCatalog.author(),
-                bookInCatalog.price()));
+                bookInCatalog.price(),
+                bookInCatalog.version()));
   }
 }

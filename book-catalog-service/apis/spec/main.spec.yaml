@@ -117,11 +117,15 @@ components:
         price:
           type: number
           format: double
+        version:
+          type: integer
+          format: int32
       required:
         - isbn
         - title
         - author
         - price
+        - version
     ErrorResponse:
       type: object
       properties:
