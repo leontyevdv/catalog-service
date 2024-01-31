@@ -10,6 +10,8 @@ A sandbox for playing with different microservices concepts.
 - Spec-first server with OpenAPI Generator. See the [apis/server](apis/server) directory.
 - External configuration with Spring Cloud Config Server. See the [config-repo](https://github.com/leontyevdv/book-service-config).
 - ADR (Architecture Decision Records). See the [doc/architecture/decisions](doc/architecture/decisions) directory and  [the ADR Tools' repo](https://github.com/npryce/adr-tools)
+- GitHub Actions
+- Spring JDBC and Flyway for database migrations
 
 ## TODO
 - Modify Gatling simulations to simulate load for this service.
@@ -163,13 +165,14 @@ Start an interactive PSQL console:
 docker exec -it book-catalog-postgres psql -U user -d book_catalog
 ```
 
-| PSQL Command	             | Description                                    |
-|:--------------------------|:-----------------------------------------------|
-| `\list`                   | List all databases.                            |
-| `\connect book_catalog`   | Connect to specific database.                  |
-| `\dt`                     | List all tables.                               |
-| `\d book`                 | Show the `book` table schema.                  |
-| `\quit`                   | Quit interactive psql console.                 |
+| PSQL Command	               | Description                                                  |
+|:----------------------------|:-------------------------------------------------------------|
+| `\list`                     | List all databases.                                          |
+| `\connect book_catalog`     | Connect to specific database.                                |
+| `\dt`                       | List all tables.                                             |
+| `\d book`                   | Show the `book` table schema.                                |
+| `\d flyway_schema_history`  | Show the flyway_schema_history table schema.                 |
+| `\quit`                     | Quit interactive psql console.                               |
 
 From within the PSQL console, you can also fetch all the data stored in the `book` table.
 
