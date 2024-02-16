@@ -59,7 +59,17 @@ tasks.withType<Test> {
 }
 
 tasks.withType<BootBuildImage> {
-    builder = "paketobuildpacks/builder:tiny"
+    environment.set(environment.get() + mapOf("BP_JVM_VERSION" to "21"))
+//    imageName.set(project.name)
+//    publish.set(true)
+
+//    docker {
+//        publishRegistry {
+//            url.set(project.findProperty("registryUrl") as String)
+//            username.set(project.findProperty("registryUsername") as String)
+//            password.set(project.findProperty("registryToken") as String)
+//        }
+//    }
 }
 
 tasks.withType<JavaCompile> {

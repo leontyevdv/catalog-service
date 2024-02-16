@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  book-catalog-service:
+    depends_on:
+      - book-catalog-postgres
+#      - book-catalog-config-service
+    image: "docker.io/library/book-catalog-service:0.0.1-SNAPSHOT"
+    container_name: "book-catalog-service"
+    ports:
+      - 9001:9001
+      - 8001:8001 # debug port
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - BPL_DEBUG_ENABLED=true # enable remote debugging
+      - BPL_DEBUG_PORT=8001
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://book-catalog-postgres:5432/book_catalog
+      - SPRING_PROFILES_ACTIVE=testdata
+      - BC_CONFIG_SERVER_URI=http://book-catalog-config-service:8888
+    platform: linux/amd64
+
+#  book-catalog-config-service:
+#    image: "docker.io/library/book-catalog-config-service:0.0.1-SNAPSHOT"
+#    container_name: "book-catalog-config-service"
+#    ports:
+#      - 8888:8888
+#    platform: linux/amd64
+
+  book-catalog-postgres:
+    image: "postgres:14.4"
+    container_name: "book-catalog-postgres"
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=book_catalog
