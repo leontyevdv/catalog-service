@@ -2,7 +2,7 @@ import io.gatling.gradle.LogHttp
 
 plugins {
     id("java")
-    id("io.gatling.gradle") version "3.10.4"
+    id("io.gatling.gradle") version "3.10.5"
 }
 
 group = "dev.oddsystems.microservices"
